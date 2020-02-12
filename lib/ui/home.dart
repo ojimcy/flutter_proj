@@ -45,7 +45,7 @@ class _BillingState extends State<Billing> {
                     Padding(
                       padding: const EdgeInsets.all(12.0),
                       child: Text(
-                        "\$123",
+                        "\$ ${calTotalPerPerson(_billAmount, _personCounter, _tipPercentage)}",
                         style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 39.5,
@@ -163,7 +163,8 @@ class _BillingState extends State<Billing> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: Text("\$54",
+                        child: Text(
+                            "\$ ${calculateTotalTip(_billAmount, _personCounter, _tipPercentage)}",
                             style: TextStyle(
                                 fontSize: 17.0,
                                 color: _purple,
@@ -186,7 +187,7 @@ class _BillingState extends State<Billing> {
                           max: 100,
                           activeColor: _purple,
                           inactiveColor: Colors.grey,
-                          
+                          divisions: 10,
                           value: _tipPercentage.toDouble(),
                           onChanged: (double value) {
                             setState(() {
@@ -202,6 +203,23 @@ class _BillingState extends State<Billing> {
         ),
       ),
     );
+  }
+
+  calTotalPerPerson(double billAmount, int slitBy, int tipPercentage) {
+    var totalPerPerson =
+        (calculateTotalTip(billAmount, slitBy, tipPercentage) / slitBy);
+
+    return totalPerPerson.toStringAsFixed(2);
+  }
+
+  calculateTotalTip(double billAmount, int slitBy, int billPercentage) {
+    double totalTip = 0.0;
+
+    if (billAmount < 0 || billAmount.toString().isEmpty || billAmount == null) {
+    } else {
+      totalTip = (billAmount * billPercentage) / 100;
+    }
+    return totalTip;
   }
 }
 
